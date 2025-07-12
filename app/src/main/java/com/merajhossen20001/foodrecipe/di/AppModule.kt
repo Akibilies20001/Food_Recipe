@@ -11,6 +11,7 @@ import com.merajhossen20001.foodrecipe.recipe.category.data.CategoryApi
 import com.merajhossen20001.foodrecipe.recipe.core.data.MealRepositoryImplementation
 import com.merajhossen20001.foodrecipe.recipe.core.data.SafeApiCall
 import com.merajhossen20001.foodrecipe.recipe.core.domain.MealRepository
+import com.merajhossen20001.foodrecipe.recipe.search_recipe.data.SearchRecipeApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -65,6 +66,10 @@ object AppModule {
     fun provideCategorizedRecipeApi(retrofit: Retrofit): CategorizedRecipeApi
     = retrofit.create(CategorizedRecipeApi::class.java)
 
+    @Provides
+    @Singleton
+    fun provideSearchRecipeApi(retrofit: Retrofit): SearchRecipeApi
+            = retrofit.create(SearchRecipeApi::class.java)
 
 
     @Provides
@@ -72,10 +77,11 @@ object AppModule {
     fun provideMealRepository(
         categoryApi: CategoryApi,
         categorizedRecipeApi: CategorizedRecipeApi,
+        searchRecipeApi: SearchRecipeApi,
         apiCall: SafeApiCall) : MealRepository = MealRepositoryImplementation(
         categoryApi = categoryApi,
         categorizedRecipeApi = categorizedRecipeApi,
-
+        searchRecipeApi = searchRecipeApi,
         apiCall = apiCall
     )
 

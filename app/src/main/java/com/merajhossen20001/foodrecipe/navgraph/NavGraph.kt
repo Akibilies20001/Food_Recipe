@@ -14,6 +14,8 @@ import com.merajhossen20001.foodrecipe.recipe.categorizedrecipe.presentation.Cat
 import com.merajhossen20001.foodrecipe.recipe.categorizedrecipe.presentation.CategorizedRecipeViewModel
 import com.merajhossen20001.foodrecipe.recipe.category.presentation.CategoryScreen
 import com.merajhossen20001.foodrecipe.recipe.category.presentation.CategoryViewModel
+import com.merajhossen20001.foodrecipe.recipe.search_recipe.presentation.SearchScreen
+import com.merajhossen20001.foodrecipe.recipe.search_recipe.presentation.SearchViewModel
 
 @Composable
 fun NavGraph(startDestination: String){
@@ -41,8 +43,13 @@ fun NavGraph(startDestination: String){
         navigation(route = ScreenRoute.AppStartNavigation.route,
             startDestination = ScreenRoute.FoodRecipeNavigator.route){
             composable(route = ScreenRoute.FoodRecipeNavigator.route){
-                val viewModel: CategorizedRecipeViewModel = hiltViewModel()
-                CategorizedRecipeScreen(viewModel)
+                //val viewModel: CategorizedRecipeViewModel = hiltViewModel()
+                val viewModel: SearchViewModel = hiltViewModel()
+                val state = viewModel.state.value
+                SearchScreen(
+                    state = state,
+                    event = viewModel::onEvent
+                ) 
             }
         }
     }
