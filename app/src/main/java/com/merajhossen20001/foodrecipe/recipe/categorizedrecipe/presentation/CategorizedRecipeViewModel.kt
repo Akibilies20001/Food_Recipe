@@ -26,7 +26,7 @@ class CategorizedRecipeViewModel @Inject constructor(
     // Error state
     var errorMessage by mutableStateOf<String?>(null)
         private set
-    var categoryName = "Beef"
+    private val categoryName: String = savedStateHandle["categoryName"] ?: "Seafood"
     // Extract categoryName from navigation argument
     //private val categoryName: String = checkNotNull(savedStateHandle["categoryName"])
 

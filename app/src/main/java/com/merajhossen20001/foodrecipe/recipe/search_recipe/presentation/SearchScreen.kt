@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 import coil.compose.rememberAsyncImagePainter
+import com.merajhossen20001.foodrecipe.recipe.core.domain.Recipe
 import com.merajhossen20001.foodrecipe.recipe.search_recipe.domain.Meal
 
 
@@ -40,7 +41,7 @@ fun SearchScreen(
     //viewModel: SearchViewModel,
     state: SearchState,
     event: (SearchEvent)-> Unit,
-    //navigateToDetail : (Article) -> Unit
+    navigateToDetail : (Recipe) -> Unit
 ){
     val gridState = rememberLazyGridState()
     Column(
@@ -77,7 +78,7 @@ fun SearchScreen(
                 CategoryCard(
                     category = category,
                     onClick = {
-                        println("Clicked: ${category.strMeal}")
+                        navigateToDetail(category.toRecipe())
                     }
                 )
             }

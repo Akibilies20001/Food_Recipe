@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.merajhossen20001.foodrecipe.navgraph.bottom_navigation.FoodNavigator
 import com.merajhossen20001.foodrecipe.onboarding_screen.presentation.OnboardingScreen
 import com.merajhossen20001.foodrecipe.onboarding_screen.presentation.OnboardingViewModel
 import com.merajhossen20001.foodrecipe.recipe.categorizedrecipe.presentation.CategorizedRecipeScreen
@@ -43,13 +44,7 @@ fun NavGraph(startDestination: String){
         navigation(route = ScreenRoute.AppStartNavigation.route,
             startDestination = ScreenRoute.FoodRecipeNavigator.route){
             composable(route = ScreenRoute.FoodRecipeNavigator.route){
-                //val viewModel: CategorizedRecipeViewModel = hiltViewModel()
-                val viewModel: SearchViewModel = hiltViewModel()
-                val state = viewModel.state.value
-                SearchScreen(
-                    state = state,
-                    event = viewModel::onEvent
-                ) 
+               FoodNavigator()
             }
         }
     }

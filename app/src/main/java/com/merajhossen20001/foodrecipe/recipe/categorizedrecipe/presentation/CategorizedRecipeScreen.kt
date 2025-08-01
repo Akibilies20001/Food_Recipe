@@ -1,9 +1,5 @@
 package com.merajhossen20001.foodrecipe.recipe.categorizedrecipe.presentation
 
-import com.merajhossen20001.foodrecipe.recipe.categorizedrecipe.domain.Meal
-import com.merajhossen20001.foodrecipe.recipe.category.presentation.CategoryViewModel
-
-
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -17,8 +13,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 
@@ -38,18 +32,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.merajhossen20001.foodrecipe.recipe.category.domain.Category
+import com.merajhossen20001.foodrecipe.recipe.core.domain.Recipe
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategorizedRecipeScreen(
-    viewModel: CategorizedRecipeViewModel
+    viewModel: CategorizedRecipeViewModel,
+    navigateToDetail : (Recipe) -> Unit
 ) {
     val gridState = rememberLazyGridState()
 
@@ -120,10 +114,10 @@ fun CategorizedRecipeScreen(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(viewModel.mealList) { category ->
-                CategoryCard(
+                RecipeCard(
                     category = category,
                     onClick = {
-                        println("Clicked: ${category.strMeal}")
+                        navigateToDetail(category.toRecipe())
                     }
                 )
             }
@@ -133,8 +127,8 @@ fun CategorizedRecipeScreen(
 }
 
 @Composable
-fun CategoryCard(
-    category: Meal,
+fun RecipeCard(
+    category: com.merajhossen20001.foodrecipe.recipe.categorizedrecipe.domain.Meal,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {

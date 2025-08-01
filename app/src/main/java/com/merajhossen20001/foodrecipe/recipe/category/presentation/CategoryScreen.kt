@@ -7,37 +7,31 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -47,7 +41,8 @@ import com.merajhossen20001.foodrecipe.recipe.category.domain.Category
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryScreen(
-    viewModel: CategoryViewModel
+    viewModel: CategoryViewModel,
+    navigateToCategorizedScreen:(Category) -> Unit
 ) {
     val gridState = rememberLazyGridState()
 
@@ -121,7 +116,7 @@ fun CategoryScreen(
                 CategoryCard(
                     category = category,
                     onClick = {
-                        println("Clicked: ${category.strCategory}")
+                        navigateToCategorizedScreen(category)
                     }
                 )
             }
@@ -141,36 +136,40 @@ fun CategoryCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         modifier = modifier
             .fillMaxWidth()
-            .height(200.dp)
-            .clickable { onClick() },
-
+            .clickable { onClick() }
     ) {
-        val scrollState = rememberScrollState()
-
-        Column(
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally,
-
-            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primaryContainer)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 150.dp)
         ) {
-            Image(painter = rememberAsyncImagePainter(category.strCategoryThumb),
+            // Background image
+            Image(
+                painter = rememberAsyncImagePainter(category.strCategoryThumb),
                 contentDescription = category.strCategory,
-                modifier = Modifier.padding(vertical = 8.dp).fillMaxHeight(.5f))
-            Column(Modifier.verticalScroll(scrollState).padding( horizontal = 8.dp)) {
-                Text(
-                    text = category.strCategory,
-                    color = Color.White,
-                    textAlign = TextAlign.Justify,
-                    style = MaterialTheme.typography.titleLarge
-                )
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .matchParentSize()
+            )
 
-                Text(
-                    text = category.strCategoryDescription,
-                    color = Color.White,
-                    textAlign = TextAlign.Justify,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+            Text(
+                text = category.strCategory,
+                color = Color.White,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.9f))
+                        )
+                    )
+                    .padding(8.dp)
+            )
+
+            // Overlay text at bottom
 
         }
     }

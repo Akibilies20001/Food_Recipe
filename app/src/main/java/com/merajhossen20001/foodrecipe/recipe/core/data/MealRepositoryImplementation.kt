@@ -7,6 +7,8 @@ import com.merajhossen20001.foodrecipe.recipe.category.domain.CategoryResponse
 import com.merajhossen20001.foodrecipe.recipe.core.domain.MealRepository
 import com.merajhossen20001.foodrecipe.recipe.core.domain.util.NetworkError
 import com.merajhossen20001.foodrecipe.recipe.core.domain.util.Result
+import com.merajhossen20001.foodrecipe.recipe.detail_recipe.data.DetailResponseApi
+import com.merajhossen20001.foodrecipe.recipe.detail_recipe.domain.DetailResponse
 import com.merajhossen20001.foodrecipe.recipe.search_recipe.data.SearchRecipeApi
 import com.merajhossen20001.foodrecipe.recipe.search_recipe.domain.SearchResponse
 
@@ -16,7 +18,8 @@ class MealRepositoryImplementation @Inject constructor(
     private val categoryApi: CategoryApi,
     private val categorizedRecipeApi: CategorizedRecipeApi,
     private val apiCall: SafeApiCall,
-    private val searchRecipeApi: SearchRecipeApi
+    private val searchRecipeApi: SearchRecipeApi,
+    private val detailResponseApi: DetailResponseApi
 ):MealRepository {
     override suspend fun getAllCategories(): Result<CategoryResponse, NetworkError> {
         return apiCall.execute{ categoryApi.getAllCategories()}
@@ -30,6 +33,9 @@ class MealRepositoryImplementation @Inject constructor(
         return apiCall.execute { searchRecipeApi.searchRecipe(name) }
     }
 
+    override suspend fun searchMealById(id: String): Result<DetailResponse, NetworkError> {
+        return apiCall.execute { detailResponseApi.getMealsByCategory(id = id) }
+    }
 
 
 }
