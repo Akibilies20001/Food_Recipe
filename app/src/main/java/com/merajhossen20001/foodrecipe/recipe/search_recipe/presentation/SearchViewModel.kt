@@ -38,11 +38,17 @@ class SearchViewModel @Inject constructor(
                 mealRepository.searchRecipeByName(state.value.searchQuery)
             ) {
                 is Result.Success -> {
-                    _state.value = state.value.copy(recipes = result.data.meals)
+                    if(result.data.meals == null){
+                        _state.value = state.value.copy(searchError = true, isError = false)
+
+                    }else{
+                        _state.value = state.value.copy(recipes = result.data.meals, isError = false)
+                    }
+
                 }
 
                 is Result.Error -> {
-                    //errorMessage = "Failed to load meals: ${result.error.name}"
+                    _state.value = state.value.copy(isError = true)
                 }
             }
         }

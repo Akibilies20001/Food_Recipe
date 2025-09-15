@@ -1,5 +1,6 @@
 package com.merajhossen20001.foodrecipe.recipe.detail_recipe.presentation
 
+import com.merajhossen20001.foodrecipe.recipe.bookmark.data.local.BookmarkEntity
 import com.merajhossen20001.foodrecipe.recipe.categorizedrecipe.domain.Meal
 import com.merajhossen20001.foodrecipe.recipe.detail_recipe.domain.MealDetail
 
@@ -23,6 +24,14 @@ fun MealDetail.getIngredientMeasurePairs(): List<Pair<String, String>> {
             null // skip if field not found or something goes wrong
         }
     }
+}
+
+fun MealDetail.toBookmarkEntity(): BookmarkEntity{
+    return BookmarkEntity(
+        idMeal = idMeal,
+        strMeal = strMeal,
+        strMealThumb = strMealThumb
+    )
 }
 
 //fun MealDetail.getIngredientMeasurePairs(): List<Pair<String, String>> {

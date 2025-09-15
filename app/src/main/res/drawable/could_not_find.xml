@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="128"
+    android:viewportHeight="128">
+
+    <!-- Magnifying glass outer circle -->
+    <path
+        android:pathData="M64,20a44,44 0 1,0 0,88a44,44 0 1,0 0,-88z"
+        android:strokeWidth="6"
+        android:strokeColor="#FF555555"
+        android:fillColor="#00000000"/>
+
+    <!-- Magnifying glass handle -->
+    <path
+        android:pathData="M90,90 L118,118"
+        android:strokeWidth="10"
+        android:strokeColor="#FF555555"
+        android:strokeLineCap="round"/>
+
+    <!-- Error cross (X) -->
+    <path
+        android:pathData="M46,46 L82,82 M82,46 L46,82"
+        android:strokeWidth="8"
+        android:strokeColor="#FFFF4444"
+        android:strokeLineCap="round"/>
+</vector>
+

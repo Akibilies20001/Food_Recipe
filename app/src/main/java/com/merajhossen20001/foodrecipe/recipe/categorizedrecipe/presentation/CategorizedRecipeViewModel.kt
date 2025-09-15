@@ -24,9 +24,9 @@ class CategorizedRecipeViewModel @Inject constructor(
         private set
 
     // Error state
-    var errorMessage by mutableStateOf<String?>(null)
+    var isError by mutableStateOf<Boolean>(false)
         private set
-    private val categoryName: String = savedStateHandle["categoryName"] ?: "Seafood"
+    val categoryName: String = savedStateHandle["categoryName"] ?: "Seafood"
     // Extract categoryName from navigation argument
     //private val categoryName: String = checkNotNull(savedStateHandle["categoryName"])
 
@@ -35,9 +35,10 @@ class CategorizedRecipeViewModel @Inject constructor(
             when (val result = mealRepository.getMealsByCategory(categoryName)) {
                 is Result.Success -> {
                     mealList = result.data.meals
+                    isError = false
                 }
                 is Result.Error -> {
-                    errorMessage = "Failed to load meals: ${result.error.name}"
+                    isError = true
                 }
             }
         }

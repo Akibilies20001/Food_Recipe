@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.merajhossen20001.foodrecipe.recipe.bookmark.data.local.BookmarkEntity
+import com.merajhossen20001.foodrecipe.recipe.core.domain.local.BookmarkRepository
 import com.merajhossen20001.foodrecipe.recipe.core.domain.MealRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,13 +19,17 @@ import com.merajhossen20001.foodrecipe.recipe.detail_recipe.domain.MealDetail
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val mealRepository: MealRepository,
+    private val bookmarkRepository: BookmarkRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     var recipe by mutableStateOf<MealDetail?>(null)
         private set
 
-    var error by mutableStateOf<String?>(null)
+    var isError by mutableStateOf<Boolean>(false)
+        private set
+
+    var isBookmarked by mutableStateOf<Boolean>(false)
         private set
 
     init {
@@ -31,6 +37,8 @@ class DetailViewModel @Inject constructor(
             Log.d("DetailViewModel", "Meal ID is missing in nav args. Using default.")
             "52772"
         }
+        viewModelScope.launch { isBookmarked = bookmarkRepository.isBookmarked(mealId) }
+
         mealId.let {
 
 
@@ -43,15 +51,32 @@ class DetailViewModel @Inject constructor(
 
                         if (!mealList.isNullOrEmpty()) {
                             recipe = mealList[0]
+                            isError = false
 
                         }
                     }
 
                     is Result.Error -> {
-                        error = "Failed to load meal: ${result.error}"
+                        isError = true
                     }
                 }
             }
         }
     }
+
+    fun addToBookmark(bookmarkEntity: BookmarkEntity){
+        viewModelScope.launch {
+            bookmarkRepository.addBookmark(bookmarkEntity)
+        }
+        isBookmarked = true
+
+    }
+
+    fun removeBookmark(bookmark : BookmarkEntity){
+        viewModelScope.launch {
+            bookmarkRepository.removeBookmark(bookmark)
+        }
+        isBookmarked = false
+    }
+
 }

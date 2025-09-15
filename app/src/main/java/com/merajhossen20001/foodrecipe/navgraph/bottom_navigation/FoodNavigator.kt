@@ -18,11 +18,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.merajhossen20001.foodrecipe.BookmarkScreen
+
 import com.merajhossen20001.foodrecipe.R
 import com.merajhossen20001.foodrecipe.navgraph.ScreenRoute
 import com.merajhossen20001.foodrecipe.navgraph.bottom_navigation.components.BottomNavigationItem
 import com.merajhossen20001.foodrecipe.navgraph.bottom_navigation.components.FoodBottomNavigation
+import com.merajhossen20001.foodrecipe.recipe.bookmark.presentation.BookmarksViewModel
+import com.merajhossen20001.foodrecipe.recipe.bookmark.presentation.BookmarkScreen
 import com.merajhossen20001.foodrecipe.recipe.categorizedrecipe.presentation.CategorizedRecipeScreen
 import com.merajhossen20001.foodrecipe.recipe.categorizedrecipe.presentation.CategorizedRecipeViewModel
 import com.merajhossen20001.foodrecipe.recipe.category.domain.Category
@@ -167,8 +169,13 @@ fun FoodNavigator(){
             }
 
             composable(route = ScreenRoute.BookmarksScreen.route){
+                val viewModel:BookmarksViewModel = hiltViewModel()
 
-                BookmarkScreen()
+                BookmarkScreen(
+                    viewModel,
+                    navigateToDetail = {recipe->
+                        navigateToDetail(navController, recipe = recipe) },
+                )
 
 //                val viewModel: BookmarkViewModel = hiltViewModel()
 //                val state = viewModel.state.value

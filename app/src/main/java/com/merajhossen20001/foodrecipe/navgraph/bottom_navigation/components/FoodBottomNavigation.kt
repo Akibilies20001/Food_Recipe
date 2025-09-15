@@ -44,10 +44,10 @@ fun FoodBottomNavigation(
 
                         Icon(painter = painterResource(item.icon) ,
                             contentDescription = null,
-                            modifier = Modifier.size(12.dp)
+                            modifier = Modifier.size(16.dp)
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(4.dp))
                         Text(text =  item.name, style = MaterialTheme.typography.labelSmall)
                     }
                 },

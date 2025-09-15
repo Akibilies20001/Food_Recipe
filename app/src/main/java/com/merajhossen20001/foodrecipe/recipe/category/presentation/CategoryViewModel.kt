@@ -14,13 +14,16 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class CategoryViewModel @Inject constructor(val mealRepository: MealRepository): ViewModel(){
+class  CategoryViewModel @Inject constructor(val mealRepository: MealRepository): ViewModel(){
     // List of categories exposed to the UI
     var categoryList by mutableStateOf<List<Category>>(emptyList())
         private set
 
     // Optional: for error handling or UI state
     var errorMessage by mutableStateOf<String?>(null)
+        private set
+
+    var error by mutableStateOf<Boolean>(false)
         private set
 
     init {
@@ -30,6 +33,7 @@ class CategoryViewModel @Inject constructor(val mealRepository: MealRepository):
                     categoryList = result.data.categories
                 }
                 is Result.Error -> {
+                    error = true
                     errorMessage = "Failed to load categories: ${result.error.name}"
                 }
 

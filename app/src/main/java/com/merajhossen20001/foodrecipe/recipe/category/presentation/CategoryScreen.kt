@@ -16,6 +16,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 
@@ -31,8 +32,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-
+import com.merajhossen20001.foodrecipe.R
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.merajhossen20001.foodrecipe.recipe.category.domain.Category
@@ -45,6 +47,7 @@ fun CategoryScreen(
     navigateToCategorizedScreen:(Category) -> Unit
 ) {
     val gridState = rememberLazyGridState()
+    val isError = viewModel.error
 
     // Track scroll direction based on item index
     var previousItemIndex by remember { mutableStateOf(0) }
@@ -78,7 +81,6 @@ fun CategoryScreen(
         animationSpec = tween(200),
         label = "AppBarHeight"
     )
-
     Column(modifier = Modifier.fillMaxSize()) {
         // Top Bar with animated alpha and height
         Box(
@@ -89,7 +91,7 @@ fun CategoryScreen(
                 .graphicsLayer {
                     this.alpha = animatedAlpha
                 }
-                ,
+            ,
             contentAlignment = Alignment.TopStart
         ) {
             if (animatedAlpha > 0f) {
@@ -99,29 +101,48 @@ fun CategoryScreen(
                     color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.padding(start = 16.dp)
                 )
+
+
             }
         }
-        Spacer(Modifier.height(12.dp))
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            state = gridState,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 12.dp),
-            contentPadding = PaddingValues(0.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+    if (isError){
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            items(viewModel.categoryList) { category ->
-                CategoryCard(
-                    category = category,
-                    onClick = {
-                        navigateToCategorizedScreen(category)
-                    }
-                )
-            }
+            Icon(
+                painter = painterResource(id = R.drawable.ic_network_error), // 👈 your drawable
+                contentDescription = "Error",
+                tint = Color.Red,
+                modifier = Modifier.size(64.dp) // adjust size
+            )
         }
-        Spacer(Modifier.height(12.dp))
+    }
+    else {
+
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                state = gridState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding( horizontal = 12.dp),
+                contentPadding = PaddingValues(top = 12.dp, bottom = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(viewModel.categoryList) { category ->
+                    CategoryCard(
+                        category = category,
+                        onClick = {
+                            navigateToCategorizedScreen(category)
+                        }
+                    )
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+        }
     }
 }
 

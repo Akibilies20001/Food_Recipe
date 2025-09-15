@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("org.jetbrains.kotlin.kapt")
     id ("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -63,6 +64,21 @@ dependencies {
     // OkHttp logging interceptor (logs request/response for debugging)
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
+
+
+    val room_version = "2.6.1" // latest stable
+
+    // Room runtime
+    implementation("androidx.room:room-runtime:$room_version")
+
+    // Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+    // Room Compiler (use KSP instead of kapt)
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // (Optional) Paging support for Room
+    implementation("androidx.room:room-paging:$room_version")
 
 
 
